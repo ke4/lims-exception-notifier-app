@@ -85,9 +85,11 @@ module Lims
       # @param [Hash] environment_data data related to the server environment
       def send_email(exception_data, environment_data)
         email_template = File.open(load_config_file(['email_templates'], @email_options['template'])) { |f| f.read }
-        message = CGI::unescapeHTML(Mustache.render(email_template, 
-          @email_header.merge!(exception_data)))
-        message.merge!(environment_data) if environment_data
+
+        email_data = @email_header.merge!(exception_data)
+        email_data.merge!(environment_data) if environment_data
+
+        message = CGI::unescapeHTML(Mustache.render(email_template, email_data))
 
         Net::SMTP.start(@email_options["server"]) do |smtp|
           smtp.send_message(message, @email_header["from"], @email_header["to"])
