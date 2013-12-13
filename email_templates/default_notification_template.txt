@@ -1,0 +1,37 @@
+From: {{from_alias}} <{{from}}>
+To: <{{to}}>
+Subject: {{subject}} {{exception.class}}: {{exception.message}}
+
+A(n) {{exception.class}} has occured.
+
+{{exception.message}}
+
+-------------------------------
+Backtrace:
+-------------------------------
+
+{{exception.backtrace}}
+
+{{#environment_data}}
+{{#request_data}}
+-------------------------------
+Request:
+-------------------------------
+
+ * URL       : {{request_data.url}}
+ * IP address: {{request_data.ip_address}}
+ * User      : {{request_data.user}}
+ * Parameters: {{request_data.parameters}}
+{{/request_data}}
+
+-------------------------------
+Environment:
+-------------------------------
+
+{{environment_data}}
+
+{{/environment_data}}
+
+Best regards,
+
+S2 Team
