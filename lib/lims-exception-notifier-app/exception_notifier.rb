@@ -14,8 +14,8 @@ module Lims
     class ExceptionNotifier
 
       # @param [Symbol/String] env_mode the environment name to use. E.g: :development
-      def initialize(env_mode)
-        @email_options = YAML.load_file(load_config_file('config','email.yml'))[env_mode.to_s]
+      def initialize
+        @email_options = YAML.load_file(load_config_file('config','email.yml'))
         @email_header = @email_options['header']
       end
 
