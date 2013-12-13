@@ -15,7 +15,6 @@ module Lims
 
       ConfigurationFileMissingError = Class.new(StandardError)
 
-      # @param [Symbol/String] env_mode the environment name to use. E.g: :development
       def initialize
         begin
           @email_options = YAML.load_file(File.join('config','exception-email.yml'))
@@ -72,11 +71,6 @@ module Lims
         }
       end
 
-      # Gets the file context where the exception was raised
-      def get_context(file, line_number)
-        # TODO add file context
-      end
-
       # Assemble the caught exception's class, message and its back trace to a hash
       # @param [Exception] exception the caught exception to handle
       def process_exception(exception)
@@ -93,7 +87,9 @@ module Lims
       # @param [Hash] exception_data data related to the caught exception
       # @param [Hash] environment_data data related to the server environment
       def send_email(exception_data, environment_data)
-        email_template = File.open(load_config_file(['email_templates'], @email_options['template'])) { |f| f.read }
+        email_template = File.open(File.expand_path(
+          File.join(File.dirname(__FILE__), '../..', ['email_templates'],
+            @email_options['template']))) {|f| f.read }
 
         email_data = @email_header.merge!(exception_data)
         email_data.merge!(environment_data) if environment_data
@@ -103,13 +99,6 @@ module Lims
         Net::SMTP.start(@email_options["server"]) do |smtp|
           smtp.send_message(message, @email_header["from"], @email_header["to"])
         end
-      end
-
-      # Loads a config file for a relative path
-      # @param [Array] folders the list of folders, where the file exists
-      # @param [String] filename the name of the file to load
-      def load_config_file(folders, filename)
-        File.expand_path(File.join(File.dirname(__FILE__), '../..', folders, filename))
       end
     end
   end
