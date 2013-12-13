@@ -13,9 +13,18 @@ module Lims
     # it again, after the class sent the e-mail.
     class ExceptionNotifier
 
+      ConfigurationFileMissingError = Class.new(StandardError)
+
       # @param [Symbol/String] env_mode the environment name to use. E.g: :development
       def initialize
-        @email_options = YAML.load_file(load_config_file('config','email.yml'))
+        begin
+          @email_options = YAML.load_file(File.join('config','exception-email.yml'))
+        rescue Errno::ENOENT => e
+          raise ConfigurationFileMissingError, "Configuration file is missing for " +
+            "Exception Notifier Application. " +
+            "You need a configuration file (exception-email.yml) " +
+            "under config folder to use this application."
+        end
         @email_header = @email_options['header']
       end
 
