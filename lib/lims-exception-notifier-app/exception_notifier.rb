@@ -67,7 +67,8 @@ module Lims
         request_data[:parameters] = parameters if parameters
 
         { :environment_data => env.map { |l| " * #{l}" }.join("\n"),
-          :request_data     => request_data
+          :request_data     => request_data,
+          :server_name      => env["SERVER_NAME"].split('.').first
         }
       end
 
@@ -93,6 +94,7 @@ module Lims
 
         email_data = @email_header.merge!(exception_data)
         email_data.merge!(environment_data) if environment_data
+        email_data.merge!(:application_name => @email_options['application_name']) if @email_options['application_name']
 
         message = CGI::unescapeHTML(Mustache.render(email_template, email_data))
 

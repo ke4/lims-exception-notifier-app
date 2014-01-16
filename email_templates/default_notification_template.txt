@@ -1,8 +1,8 @@
 From: {{from_alias}} <{{from}}>
 To: <{{to}}>
-Subject: {{subject}} {{exception.class}}: {{exception.message}}
+Subject: [{{server_name}}][{{application_name}}] {{subject}} {{exception.class}}: {{exception.message}}
 
-A(n) {{exception.class}} has occured.
+A(n) {{exception.class}} has occurred.
 
 {{exception.message}}
 
