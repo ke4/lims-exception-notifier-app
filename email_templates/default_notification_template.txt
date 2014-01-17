@@ -1,6 +1,7 @@
 From: {{from_alias}} <{{from}}>
 To: <{{to}}>
-Subject: [{{server_name}}][{{application_name}}] {{subject}} {{exception.class}}: {{exception.message}}
+Subject: [{{application_name}} {{env_name}} ({{server_name}})] {{subject}} {{exception.class}}: {{exception.message}}
+
 
 A(n) {{exception.class}} has occurred.
 
