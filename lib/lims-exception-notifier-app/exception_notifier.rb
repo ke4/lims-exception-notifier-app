@@ -66,9 +66,13 @@ module Lims
         env['rack.input'].each { |line| parameters += line }
         request_data[:parameters] = parameters if parameters
 
+        server_name = env["SERVER_NAME"].split('.').first
+        env_name = @email_options['environment_name'][server_name]
+
         { :environment_data => env.map { |l| " * #{l}" }.join("\n"),
           :request_data     => request_data,
-          :server_name      => env["SERVER_NAME"].split('.').first
+          :server_name      => server_name,
+          :env_name         => env_name
         }
       end
 
