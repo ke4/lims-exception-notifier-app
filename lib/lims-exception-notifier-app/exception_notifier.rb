@@ -48,6 +48,10 @@ module Lims
         send_email(exception_data, environment_data)
       end
 
+      def enabled?
+        @email_options["enabled"] ? @email_options["enabled"] : false
+      end
+
       private
 
       # This method is processing the environmental variables and returning a
